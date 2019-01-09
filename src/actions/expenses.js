@@ -1,0 +1,34 @@
+import uuid from 'uuid'
+
+// add_expense action
+export const addExpense = ({
+    description = '',
+    note = '',
+    amount = 0,
+    createdAt = 0
+} = {}) => ({
+    type: 'ADD_EXPENSE',
+    expense: {
+        id: uuid(),
+        description,
+        note,
+        amount,
+        createdAt
+    }
+
+})
+
+// edit expense action
+export const editExpense = (id, updates) => ({
+    type: 'EDIT_EXPENSE',
+    id,
+    updates
+})
+
+// remove expense action
+export const removeExpense = ({
+    id
+} = {}) => ({
+    type: 'REMOVE_EXPENSE',
+    id
+})
