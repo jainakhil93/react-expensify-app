@@ -8,9 +8,9 @@ const ExpenseSummary = ({expenseCount, expenseTotal}) => (
     <div>
         {
             expenseCount.length < 2 ? (
-                <h1>{`Viewing ${expenseCount.length} expense totalling ${numeral(expenseTotal/ 100).format('$0,0.00')}`}</h1>
+                <h1>{`Viewing ${expenseCount.length} expense totalling ${numeral(expenseTotal).format('$0,0.00')}`}</h1>
             ) : (
-                <h1>{`Viewing ${expenseCount.length} expenses totalling ${numeral(expenseTotal/ 100).format('$0,0.00')}`}</h1>
+                <h1>{`Viewing ${expenseCount.length} expenses totalling ${numeral(expenseTotal).format('$0,0.00')}`}</h1>
             )
         }
     </div>

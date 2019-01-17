@@ -1,22 +1,34 @@
 import uuid from 'uuid'
+import database from '../firebase/firebase'
+
+// component calls action generators
+// action generators return object
+// component dispatched object
+// redux store changes
 
 // add_expense action
-export const addExpense = ({
-    description = '',
-    note = '',
-    amount = 0,
-    createdAt = 0
-} = {}) => ({
-    type: 'ADD_EXPENSE',
-    expense: {
-        id: uuid(),
-        description,
-        note,
-        amount,
-        createdAt
-    }
-
+export const addExpense = (expense) => ({
+    type:'ADD_EXPENSE',
+    expense
 })
+
+export const startAddExpense = (expenseData = {}) => {
+    return (dispatch) => {
+        const {
+            description = '',
+            note = '',
+            amount = 0,
+            createdAt = 0
+        } = expenseData
+        const expense = {description, note, amount, createdAt}
+        return database.ref('expenses').push(expense).then((ref) => {
+            dispatch(addExpense({
+                id: ref.key,
+                ...expense
+            }))
+        })
+    }
+}
 
 // edit expense action
 export const editExpense = (id, updates) => ({
