@@ -1,27 +1,33 @@
 import React from 'react';
-import getVisibleExpenses from '../selectors/expenses'
-import getExpensesTotal from '../selectors/expenses-total'
-import { connect } from 'react-redux'
-import numeral from 'numeral'
+import { connect } from 'react-redux';
+import numeral from 'numeral';
+import  { Link } from 'react-router-dom'
+import selectExpenses from '../selectors/expenses';
+import selectExpensesTotal from '../selectors/expenses-total';
 
-const ExpenseSummary = ({expenseCount, expenseTotal}) => (
-    <div>
-        {
-            expenseCount.length < 2 ? (
-                <h1>{`Viewing ${expenseCount.length} expense totalling ${numeral(expenseTotal).format('$0,0.00')}`}</h1>
-            ) : (
-                <h1>{`Viewing ${expenseCount.length} expenses totalling ${numeral(expenseTotal).format('$0,0.00')}`}</h1>
-            )
-        }
+export const ExpensesSummary = ({ expenseCount, expensesTotal }) => {
+  const expenseWord = expenseCount === 1 ? 'expense' : 'expenses' ;
+  const formattedExpensesTotal = numeral(expensesTotal).format('$0,0.00');
+  
+  return (
+    <div className="page-header">
+    <div className="content-container">
+      <h1 className="page-header__title">Viewing <span>{expenseCount}</span> {expenseWord} totalling <span>{formattedExpensesTotal}</span></h1>
+    <div className="page-header__actions">
+        <Link className="button" to='/create'> Add Expense </Link>
     </div>
-)
+    </div>
+    </div>
+  );
+};
 
 const mapStateToProps = (state) => {
-    const visibleExpenses = getVisibleExpenses(state.expenses, state.filters)
-    return {
-        expenseCount: visibleExpenses,
-        expenseTotal: getExpensesTotal(visibleExpenses)
-    }
-}
+  const visibleExpenses = selectExpenses(state.expenses, state.filters);
 
-export default connect(mapStateToProps)(ExpenseSummary);
+  return {
+    expenseCount: visibleExpenses.length,
+    expensesTotal: selectExpensesTotal(visibleExpenses)
+  };
+};
+
+export default connect(mapStateToProps)(ExpensesSummary);
